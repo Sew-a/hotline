@@ -1,54 +1,64 @@
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1040;
-  width: 100vw;
-  height: 100vh;
-  background-color: #000;
-  opacity: .5;
-}
 
-.modal-wrapper {
+.modal{
   position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1050;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  outline: 0;
-  .modal {
-    z-index: 100;
-    background: white;
-    position: relative;
-    margin: 1.75rem auto;
-    border-radius: 3px;
-    max-width: 500px;
-    padding: 2rem;
-    .modal-header {
-      display: flex;
-      justify-content: flex-end;
-      .modal-close-button {
-        font-size: 1.4rem;
-        font-weight: 700;
-        line-height: 1;
-        color: #000;
-        opacity: .3;
-        cursor: pointer;
+  max-width:500px;
+  min-width: 400px;
+  height:auto;
+  border-radius: 2px;
+  top:50%;
+  left: 50%;
+  transform:translate(-50%,-50%);
+  background: #fff;
+  padding: 4rem;
+  zIndex:100;
+
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .user_info{
+     width:80%;
+     height: auto;
+     padding-bottom: 20px;
+  }
+
+    input{
+      margin:15px 0;
+      font-size: 17px;
+      padding: 6px 4px;
+      border:none;
+      border-bottom:1px solid #151b31;
+      width:80%;
+      outline: none;
+    }
+    .mod-buttons{
+      margin-top:30px ;
+      display: inline-block;
+      button {
+        display: inline;
+        font-size: 1.1rem;
         border: none;
+        border-radius: 3px;
+        padding: .5rem 1.2rem;
+        margin-left: .5rem;
+        background: #273349;
+        color: #fff;
+        cursor: pointer;
       }
     }
-  }
-}
 
-button {
-  font-size: .9rem;
-  border: none;
-  border-radius: 3px;
-  padding: .3rem 1rem;
-  margin-left: .5rem;
-  background: #247BA0;
-  color: #fff;
+  .modal-close-button {
+    position: absolute;
+    right:15px;
+    top:13px;
+    font-size: 22px;
+    font-weight:  bolder;
+    line-height: 1;
+    color: #000;
+    opacity: .3;
+    cursor: pointer;
+    border: none;
+  }
 }

@@ -1,28 +1,20 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
-
-import Modal from "./modal/Modal"
-import useModal from "./modal/UseModal";
-import {Link} from "react-router-dom";
-
-
+import NewModal from "./modal/NewModal";
 
  const Api = () => {
-
     const [all, getAll] = useState([]);
-
     const [fName, setfName] = useState("");
     const [pass, setPass] = useState("");
-    // const [giveId, setGiveId] = useState("");
+    const [getID, setGetID] = useState("");
 
-    const {isShowing, toggle} = useModal();
     const [showDataTarg, setShowDataTarg] = useState("");
+    const [isOpen, setIsOpen] = useState(false);
 
 
     (useEffect(() => {
         allUsers();
     },[] ));
-
 
 
     // ------------------- GET
@@ -45,9 +37,8 @@ import {Link} from "react-router-dom";
                  // console.log(tor);
                  setShowDataTarg(tor);
              });
-         {toggle()}
+         setIsOpen(true);
      }
-
 
     //  --------------------  DELETE
 
@@ -60,10 +51,6 @@ import {Link} from "react-router-dom";
 
     // ---------------------------- POST
 
-     const onChangeValue = event => setfName(event.target.value);
-     const onChangePass = event => setPass(event.target.value);
-     // const onChangeID = event => setGiveId(event.target.value);
-
 
     const addUser = async () => {
       await  axios.post(`http://localhost:3001/users/`, {
@@ -74,28 +61,33 @@ import {Link} from "react-router-dom";
         setfName("");
         setPass("");
         allUsers();
+        setIsOpen(false);
     }
 
     // -------------------------------- PUT
 
-    const changeUser = async (id ,e) => {
-        await axios.put(`http://localhost:3001/users/${id}`, {
-            name: fName.length > 3 ? fName : "Gaga",
-            password: pass.length > 3 ? pass : "45454545",
-            profession: "Developer",
-            id,
-       });
-        allUsers();
-    }
+     const clickChangeUser = async () => {
+         await axios.put(`http://localhost:3001/users/${getID}`, {
+             name: fName.length ? fName : "Gaga",
+             password: pass.length ? pass : "45454545",
+             profession: "Developer",
+             id: getID,
+         });
+         setfName("");
+         setPass("");
+         allUsers();
+         setIsOpen(false);
+     }
 
+    const changeUser = (id) => {
+        setIsOpen(true);
+        setGetID(id);
+    }
 
 
 // DOM
 return(
         <div className="table-section">
-            <input placeholder="Name" value={fName} onChange={onChangeValue} />
-            <input placeholder="Password" value={pass} onChange={onChangePass} />
-            <button onClick={addUser} >Create User</button>
         <table>
             <thead>
             <tr>
@@ -112,16 +104,23 @@ return(
                          <td onClick={() => showUser(item.id)}>{item.id}</td>
                          <td>{item.name}</td>
                          <td>{item.password}</td>
-                         <td className="add" onClick={(e) => changeUser(item.id, e)}>Change</td>
+                         <td className="add" onClick={(e) => changeUser(item.id)}>Change</td>
                          <td className="delete" onClick={(e) => deleteUser(item.id, e)}>&#10006;</td>
                      </tr>
                  ))}
             </tbody>
         </table>
+            <button onClick={()=> {setIsOpen(true)}} className="add_btn">ADD</button>
         {/*    MODAL  */}
 
-            <Modal isShowing={isShowing}  hide={toggle}  useName={showDataTarg} />
-
+            <NewModal open={isOpen} useName={showDataTarg} onClose={() => setIsOpen(false)}>
+                <input placeholder="Name" value={fName} onChange={(e) => setfName(e.target.value)} />
+                <input placeholder="Password" value={pass} onChange={(e) => setPass(e.target.value)} />
+                <div className="mod-buttons">
+                    <button onClick={addUser} >Create User</button>
+                    <button onClick={clickChangeUser} >Change User</button>
+                </div>
+            </NewModal>
         </div>
   );
 };
